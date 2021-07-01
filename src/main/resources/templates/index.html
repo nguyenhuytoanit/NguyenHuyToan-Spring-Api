@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Poduct</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+
+</head>
+<body>
+<div>
+
+    <ul id="list-product">
+
+    </ul>
+
+</div>
+<script>
+
+    const API = 'http://localhost:8080/api/product'
+
+    const listProducts = document.querySelector("#list-product")
+
+
+    const requestApi = async (callBack) => {
+        const response = await fetch(API)
+        const {data} = await response.json()
+        callBack(data)
+    }
+
+    const renderListProduct = (listProduct) => {
+        if(!listProduct) return
+        const products = listProduct.map(product => {
+            return  (
+                `<li>
+                <span>${product.name}</span>
+                <span>${product.price}</span>
+                <span>${product.quantity}</span>
+            </li>
+           `
+            )
+        }).join('')
+        listProducts.innerHTML = products
+    }
+
+    renderListProduct()
+    requestApi(renderListProduct)
+</script>
+
+</body>
+</html>
